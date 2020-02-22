@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class GlobalHealth : MonoBehaviour
 {
-    public static int currentHealth = 20;
+    public static int currentHealth = 1000;
     public int internalHealth;
     // Update is called once per frame
     void Update()

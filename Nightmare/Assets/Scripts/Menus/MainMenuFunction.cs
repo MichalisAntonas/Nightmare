@@ -8,6 +8,12 @@ public class MainMenuFunction : MonoBehaviour
     public GameObject fadeOut;
     public GameObject loadText;
     public AudioSource buttonClick;
+
+    void Start()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
     
     public void PlayGameButton()
     {
