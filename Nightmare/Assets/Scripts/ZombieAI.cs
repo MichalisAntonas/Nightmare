@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ZombieAI : MonoBehaviour
 {
@@ -11,20 +12,28 @@ public class ZombieAI : MonoBehaviour
     public AudioSource[] hurtSounds;
     public GameObject theFlash;
 
+    Animation anim;
+    NavMeshAgent navAgent;
+
     void Start()
     {
-        this.GetComponentInChildren<Animation>().wrapMode = WrapMode.Loop;
+        anim = this.GetComponentInChildren<Animation>();
+        anim.wrapMode = WrapMode.Loop;
+
+        navAgent = this.GetComponent<NavMeshAgent>();
+        navAgent.speed = 1f;
     }
 
    //Zombie looks towards Player and follows him
     void Update()
     {
-        transform.LookAt(thePlayer.transform);
-        transform.position = Vector3.MoveTowards(transform.position, thePlayer.transform.position, enemySpeed);
-        
+        Vector3 point;
+        if (RandomPoint(thePlayer.transform.position, 10f, out point))
+            navAgent.destination = thePlayer.transform.position;
+
         if (attackTrigger && !isAttacking)
         {
-            this.GetComponentInChildren<Animation>().Play("Z_Attack");
+            anim.Play("Z_Attack");
             StartCoroutine(InflictDamage());
         }
     }
@@ -43,7 +52,7 @@ public class ZombieAI : MonoBehaviour
         if (collider.gameObject.transform.parent.gameObject.tag == "MainCamera")
         {
             enemySpeed = 0.02f;
-            this.GetComponentInChildren<Animation>().Play("Z_Walk_InPlace");
+            anim.Play("Z_Walk_InPlace");
             attackTrigger = false;
         }
     }
@@ -61,5 +70,21 @@ public class ZombieAI : MonoBehaviour
 
         yield return new WaitForSeconds(0.09f);
         isAttacking = false;
+    }
+
+    bool RandomPoint(Vector3 center, float range, out Vector3 result)
+    {
+        for (int i = 0; i < 30; i++)
+        {
+            Vector3 randomPoint = center + Random.insideUnitSphere * range;
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
+            {
+                result = hit.position;
+                return true;
+            }
+        }
+        result = Vector3.zero;
+        return false;
     }
 }
