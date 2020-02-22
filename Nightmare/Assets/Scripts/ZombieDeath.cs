@@ -1,30 +1,37 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ZombieDeath : MonoBehaviour
 {
-    public int EnemyHealth = 15;
-    public GameObject TheEnemy;
+    private int EnemyHealth;
     public int StatusCheck;
     public AudioSource ZombieDeathSound;
+
+    Animation anim;
+    NavMeshAgent navAgent;
+
+    void Start()
+    {
+        EnemyHealth = Random.Range(3, 6);
+
+        anim = this.GetComponentInChildren<Animation>();
+        navAgent = this.GetComponent<NavMeshAgent>();
+    }
 
     void DamageZombie(int DamageAmount)
     {
         EnemyHealth -= DamageAmount;
-    }
-
-
-    // Update is called once per frame
-    void Update()
-    {
-        if(EnemyHealth <=0 && StatusCheck == 0)
+        if (EnemyHealth <= 0 && StatusCheck == 0)
         {
+            navAgent.enabled = false;
             this.GetComponent<ZombieAI>().enabled = false;
             this.GetComponent<BoxCollider>().enabled = false;
             StatusCheck = 2;
-            TheEnemy.GetComponent<Animation>().Stop("Z_Walk_InPlace");
-            TheEnemy.GetComponent<Animation>().Play("Z_FallingBack");
+
+            anim.wrapMode = WrapMode.Once;
+            anim.Play("Z_FallingBack");
             ZombieDeathSound.Play();
         }
     }

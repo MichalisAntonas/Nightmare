@@ -10,7 +10,7 @@ public class FirePistol : MonoBehaviour
     public AudioSource GunFire;
     public bool IsFiring = false;
     public float TargetDistance;
-    public int DamageAmount = 5;
+    private int DamageAmount = 1;
     void Update()
     {
         if (Input.GetButtonDown("Fire1") && GlobalAmmo.ammoCount >= 1)
