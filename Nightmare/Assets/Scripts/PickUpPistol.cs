@@ -12,7 +12,7 @@ public class PickUpPistol : MonoBehaviour
     public GameObject GuideArrow;
     public GameObject ExtraCross;
     public GameObject TheJumpTrigger;
-    public AudioSource PickUpGun;
+    public AudioClip PickUpGun;
 
     void Update()
     {
@@ -32,7 +32,9 @@ public class PickUpPistol : MonoBehaviour
         {
             if (TheDistance <= 2)
             {
-                PickUpGun.Play();
+                this.GetComponent<AudioSource>().clip = this.PickUpGun;
+                this.GetComponent<AudioSource>().Play();
+
                 this.GetComponent<BoxCollider>().enabled = false;
                 ActionDisplay.SetActive(false);
                 ActionText.SetActive(false);
@@ -41,7 +43,6 @@ public class PickUpPistol : MonoBehaviour
                 ExtraCross.SetActive(false);
                 GuideArrow.SetActive(false);
                 TheJumpTrigger.SetActive(true);
-
             }
         }
     }

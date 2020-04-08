@@ -1,41 +1,42 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 public class FirePistol : MonoBehaviour
 {
+    public AudioClip GunFire;
+    public int DamageAmount = 1;
 
-    public GameObject TheGun;
-    
-    public AudioSource GunFire;
-    public bool IsFiring = false;
-    public float TargetDistance;
-    private int DamageAmount = 1;
+    AudioSource audioSource;
+
+    private bool IsFiring = false;
+
+    void Start()
+    {
+        this.audioSource = this.GetComponent<AudioSource>();
+        this.audioSource.clip = this.GunFire;
+    }
+
     void Update()
     {
-        if (Input.GetButtonDown("Fire1") && GlobalAmmo.ammoCount >= 1)
+        if (Input.GetButtonDown("Fire1") && GlobalAmmo.ammoCount >= 1 && !this.IsFiring)
         {
-            if (IsFiring == false)
-            {
-                GlobalAmmo.ammoCount -= 1;
-                StartCoroutine(FiringPistol());
-            }
+            GlobalAmmo.ammoCount -= 1;
+            StartCoroutine(FiringPistol());
         }
-
     }
 
     IEnumerator FiringPistol()
     {
-        RaycastHit Shot;
         IsFiring = true;
-        if (Physics.Raycast (transform.position,transform.TransformDirection(Vector3.forward),out Shot))
-        {
-            TargetDistance = Shot.distance;
+        this.GetComponent<Animation>().Play("PistolShot");
+        this.audioSource.Play();
+
+        RaycastHit Shot;
+        if (Physics.Raycast(transform.position,transform.TransformDirection(Vector3.forward), out Shot))
             Shot.transform.SendMessage("DamageZombie", DamageAmount, SendMessageOptions.DontRequireReceiver);
-        }
-        TheGun.GetComponent<Animation>().Play("PistolShot");
-       
-        GunFire.Play();
+
         yield return new WaitForSeconds(0.5f);
         IsFiring = false;
     }

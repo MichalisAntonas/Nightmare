@@ -5,23 +5,31 @@ using UnityEngine.AI;
 
 public class ZombieAI : MonoBehaviour
 {
-    public GameObject thePlayer;
-    public float enemySpeed = .02f;
-    bool attackTrigger = false;
-    public bool isAttacking = false;
-    public AudioSource[] hurtSounds;
-    public GameObject theFlash;
+    public float enemySpeed = .01f;
+    public AudioClip[] hurtSounds;
 
+    AudioSource audioSource;
     Animation anim;
     NavMeshAgent navAgent;
+    GameObject uiFlash;
+
+    private GameObject thePlayer;
+    private bool isAttacking = false;
+    private bool attackTrigger = false;
 
     void Start()
     {
+        thePlayer = GameObject.FindGameObjectWithTag("Player");
+
+        audioSource = this.GetComponent<AudioSource>();
+
         anim = this.GetComponentInChildren<Animation>();
         anim.wrapMode = WrapMode.Loop;
 
         navAgent = this.GetComponent<NavMeshAgent>();
         navAgent.speed = 1f;
+
+        uiFlash = GameObject.FindGameObjectWithTag("HurtFlash");
     }
 
    //Zombie looks towards Player and follows him
@@ -60,11 +68,12 @@ public class ZombieAI : MonoBehaviour
     IEnumerator InflictDamage()
     {
         isAttacking = true;
-        hurtSounds[Random.Range(0, 3)].Play();
-        
-        theFlash.SetActive(true);
+        this.audioSource.clip = hurtSounds[Random.Range(0, 3)];
+        this.audioSource.Play();
+
+        uiFlash.SetActive(true);
         yield return new WaitForSeconds(0.1f);
-        theFlash.SetActive(false);
+        uiFlash.SetActive(false);
         yield return new WaitForSeconds(1f);
         GlobalHealth.currentHealth -= 5;
 

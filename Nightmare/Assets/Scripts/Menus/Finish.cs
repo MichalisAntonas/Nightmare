@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 
 public class Finish : MonoBehaviour
 {
-
     void OnTriggerEnter(Collider collider)
     {
+        AnalyticsEvent.GameOver();
+
         //StartCoroutine(TakeToFinish());
         SceneManager.LoadScene(4);
         Cursor.visible = true;

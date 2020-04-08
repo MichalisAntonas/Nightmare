@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class AmmoPickUp : MonoBehaviour
 {
-    public GameObject theAmmo;
-    public GameObject ammoDisplayBox;
-    public AudioSource ammoPickUp;
+    public AudioClip ReloadClip;
+
     void OnTriggerEnter(Collider other)
     {
-        ammoPickUp.Play();
-        theAmmo.SetActive(true);
+        if (other.gameObject.tag.ToLower() != "player")
+            return;
+
         GlobalAmmo.ammoCount += 10;
-        theAmmo.SetActive(false);
+        other.gameObject.GetComponent<AudioSource>().PlayOneShot(this.ReloadClip);
+
+        this.gameObject.SetActive(false);
+        Destroy(this.gameObject, 5);
     }
 }

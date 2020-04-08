@@ -7,14 +7,14 @@ public class ZombieDeath : MonoBehaviour
 {
     private int EnemyHealth;
     public int StatusCheck;
-    public AudioSource ZombieDeathSound;
+    public AudioClip ZombieDeathSound;
 
     Animation anim;
     NavMeshAgent navAgent;
 
     void Start()
     {
-        EnemyHealth = Random.Range(3, 6);
+        EnemyHealth = Random.Range(3, 5);
 
         anim = this.GetComponentInChildren<Animation>();
         navAgent = this.GetComponent<NavMeshAgent>();
@@ -32,7 +32,9 @@ public class ZombieDeath : MonoBehaviour
 
             anim.wrapMode = WrapMode.Once;
             anim.Play("Z_FallingBack");
-            ZombieDeathSound.Play();
+
+            // Don't play a clip until we have a zombie death sound
+            // AudioSource.PlayClipAtPoint(this.ZombieDeathSound, this.gameObject.transform.position);
         }
     }
 }
