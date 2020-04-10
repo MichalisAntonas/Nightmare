@@ -6,6 +6,7 @@ TagManager:
   tags:
   - HurtFlash
   - AmmoPanel
+  - UIFlash
   layers:
   - Default
   - TransparentFX

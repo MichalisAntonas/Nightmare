@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class ZombieAI : MonoBehaviour
 {
@@ -13,31 +14,28 @@ public class ZombieAI : MonoBehaviour
     NavMeshAgent navAgent;
     GameObject uiFlash;
 
-    private GameObject thePlayer;
+    private GameObject player;
     private bool isAttacking = false;
     private bool attackTrigger = false;
 
     void Start()
     {
-        thePlayer = GameObject.FindGameObjectWithTag("Player");
+        this.player = GameObject.FindGameObjectWithTag("Player");
 
-        audioSource = this.GetComponent<AudioSource>();
+        this.audioSource = player.GetComponent<AudioSource>();
 
-        anim = this.GetComponentInChildren<Animation>();
-        anim.wrapMode = WrapMode.Loop;
+        this.anim = this.GetComponentInChildren<Animation>();
+        this.anim.wrapMode = WrapMode.Loop;
 
-        navAgent = this.GetComponent<NavMeshAgent>();
-        navAgent.speed = 1f;
-
-        uiFlash = GameObject.FindGameObjectWithTag("HurtFlash");
+        this.navAgent = this.GetComponent<NavMeshAgent>();
+        this.navAgent.speed = 1f;
     }
 
-   //Zombie looks towards Player and follows him
     void Update()
     {
         Vector3 point;
-        if (RandomPoint(thePlayer.transform.position, 10f, out point))
-            navAgent.destination = thePlayer.transform.position;
+        if (RandomPoint(player.transform.position, 10f, out point))
+            navAgent.destination = player.transform.position;
 
         if (attackTrigger && !isAttacking)
         {
@@ -46,10 +44,13 @@ public class ZombieAI : MonoBehaviour
         }
     }
 
-    //Zombie attacks if its in Players Collider
+    // Zombie attacks if its in Players Collider
     void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject.transform.parent.gameObject.tag == "MainCamera")
+        if (collider == null)
+            return;
+
+        if (collider.gameObject.tag == "Player")
         {
             attackTrigger = true;
             enemySpeed = 0;
@@ -57,9 +58,12 @@ public class ZombieAI : MonoBehaviour
     }
     void OnTriggerExit(Collider collider)
     {
-        if (collider.gameObject.transform.parent.gameObject.tag == "MainCamera")
+        if (collider == null)
+            return;
+
+        if (collider.gameObject.tag == "Player")
         {
-            enemySpeed = 0.02f;
+            enemySpeed = .01f;
             anim.Play("Z_Walk_InPlace");
             attackTrigger = false;
         }
@@ -68,16 +72,19 @@ public class ZombieAI : MonoBehaviour
     IEnumerator InflictDamage()
     {
         isAttacking = true;
+        this.player.GetComponent<HealthController>().Health -= Random.Range(10, 20) * Random.value;
+
         this.audioSource.clip = hurtSounds[Random.Range(0, 3)];
         this.audioSource.Play();
 
-        uiFlash.SetActive(true);
-        yield return new WaitForSeconds(0.1f);
-        uiFlash.SetActive(false);
-        yield return new WaitForSeconds(1f);
-        GlobalHealth.currentHealth -= 5;
+        GameObject flash = GameObject.FindGameObjectWithTag("HurtFlash");
+        RawImage hurtImg = flash.GetComponent<RawImage>();
 
-        yield return new WaitForSeconds(0.09f);
+        hurtImg.color = new Color(1f, 0f, 0f, .25f);
+        yield return new WaitForSeconds(.1f);
+        hurtImg.color = new Color(1f, 0f, 0f, 0f);
+
+        yield return new WaitForSeconds(1f);
         isAttacking = false;
     }
 
