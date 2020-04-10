@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AmmoPickUp : MonoBehaviour
 {
+    public int Amount = 8;
     public AudioClip ReloadClip;
 
     void OnTriggerEnter(Collider other)
@@ -11,7 +12,7 @@ public class AmmoPickUp : MonoBehaviour
         if (other.gameObject.tag.ToLower() != "player")
             return;
 
-        GlobalAmmo.ammoCount += 10;
+        other.gameObject.GetComponent<AmmoController>().AmmoCount += this.Amount;
         other.gameObject.GetComponent<AudioSource>().PlayOneShot(this.ReloadClip);
 
         this.gameObject.SetActive(false);

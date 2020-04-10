@@ -9,6 +9,7 @@ public class FirePistol : MonoBehaviour
     public int DamageAmount = 1;
 
     AudioSource audioSource;
+    AmmoController ammoControl;
 
     private bool IsFiring = false;
 
@@ -16,13 +17,15 @@ public class FirePistol : MonoBehaviour
     {
         this.audioSource = this.GetComponent<AudioSource>();
         this.audioSource.clip = this.GunFire;
+
+        this.ammoControl = this.GetComponentInParent<AmmoController>();
     }
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1") && GlobalAmmo.ammoCount >= 1 && !this.IsFiring)
+        if (Input.GetButtonDown("Fire1") && this.ammoControl.AmmoCount > 0 && !this.IsFiring)
         {
-            GlobalAmmo.ammoCount -= 1;
+            this.ammoControl.AmmoCount--;
             StartCoroutine(FiringPistol());
         }
     }

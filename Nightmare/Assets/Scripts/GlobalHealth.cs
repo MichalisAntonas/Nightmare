@@ -6,6 +6,7 @@ public class GlobalHealth : MonoBehaviour
 {
     public static int currentHealth = 1000;
     public int internalHealth;
+
     // Update is called once per frame
     void Update()
     {
@@ -14,10 +15,6 @@ public class GlobalHealth : MonoBehaviour
         {
             SceneManager.LoadScene(3);
             currentHealth = 20;
-            GlobalAmmo.ammoCount = 0;
         }
-
     }
-   
-   
 }
