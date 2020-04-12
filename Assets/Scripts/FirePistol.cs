@@ -5,7 +5,7 @@ using UnityEngine.Analytics;
 
 public class FirePistol : MonoBehaviour
 {
-    public GameObject MuzzleShot; 
+    public GameObject MuzzleShot;
     public AudioClip GunFire;
     public int DamageAmount = 1;
 
@@ -36,12 +36,14 @@ public class FirePistol : MonoBehaviour
         IsFiring = true;
         this.GetComponent<Animation>().Play("PistolShot");
         this.audioSource.Play();
-        MuzzleShot.SetActive(true);
-        MuzzleShot.GetComponent<Animation>().Play("MuzzleAnim");
+
+        this.MuzzleShot.SetActive(true);
+        this.MuzzleShot.GetComponent<Animation>().Play("MuzzleAnim");
+
         RaycastHit Shot;
         if (Physics.Raycast(transform.position,transform.TransformDirection(Vector3.forward), out Shot))
             Shot.transform.SendMessage("DamageZombie", DamageAmount, SendMessageOptions.DontRequireReceiver);
-       
+
         yield return new WaitForSeconds(0.5f);
         IsFiring = false;
     }
