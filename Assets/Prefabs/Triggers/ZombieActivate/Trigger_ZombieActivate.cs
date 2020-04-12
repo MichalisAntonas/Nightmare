@@ -3,17 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Analytics;
 
-public class TriggerScript : MonoBehaviour
+public class Trigger_ZombieActivate : MonoBehaviour
 {
     public int TriggerID = -1;
     public GameObject[] ZombiesToActivate;
-
-    void Start()
-    {
-        // automatically assign an ID based on the amount of triggers in the level
-        if (this.TriggerID == -1)
-            this.TriggerID = FindObjectsOfType<TriggerScript>().Length - 1;
-    }
 
     void OnTriggerEnter(Collider other)
     {

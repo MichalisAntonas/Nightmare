@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4310921068666171293}
   - component: {fileID: 4310921068666171288}
-  - component: {fileID: 1201655450547322639}
+  - component: {fileID: 7478756557554251086}
   m_Layer: 0
-  m_Name: Trigger
+  m_Name: Trigger_ZombieActivate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,7 +45,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2, y: 1, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1201655450547322639
+--- !u!114 &7478756557554251086
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
