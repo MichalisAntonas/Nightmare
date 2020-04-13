@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class MainMenuFunction : MonoBehaviour
 {
-
     public GameObject fadeOut;
     public GameObject loadText;
     public AudioSource buttonClick;
+    public string CurrentSurveyURL = string.Empty;
 
     void Start()
     {
@@ -15,15 +15,23 @@ public class MainMenuFunction : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
     }
     
-    public void PlayGameButton()
+    public void Button_PlayGame()
     {
         StartCoroutine(NewGameStart());
     }
-    public void Exit()
+
+    public void Button_OpenSurvey()
     {
-        
-        StartCoroutine(ExitButton());
+        if (this.CurrentSurveyURL.Length > 0)
+            Application.OpenURL(this.CurrentSurveyURL);
     }
+
+    public void Button_Exit()
+    {
+        buttonClick.Play();
+        Application.Quit();
+    }
+
     IEnumerator NewGameStart()
     {
         fadeOut.SetActive(true);
@@ -31,13 +39,5 @@ public class MainMenuFunction : MonoBehaviour
         yield return new WaitForSeconds(4);
         loadText.SetActive(true);
         SceneManager.LoadScene(2);
-    }
-    IEnumerator ExitButton()
-    {
-       
-        buttonClick.Play();
-        Application.Quit();
-        yield return new WaitForSeconds(1);
-        
     }
 }
