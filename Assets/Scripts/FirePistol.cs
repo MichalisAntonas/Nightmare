@@ -45,7 +45,6 @@ public class FirePistol : MonoBehaviour
         this.GetComponent<Animation>().Play("PistolShot");
 
         this.audioSource.pitch = Random.Range(this.PitchThresholdLow, this.PitchThresholdHigh);
-        Debug.Log(this.audioSource.pitch);
         this.audioSource.Play();
 
         //this.MuzzleShot.SetActive(true);
