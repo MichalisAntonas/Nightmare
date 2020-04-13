@@ -7,8 +7,9 @@ public class ZombieDeath : MonoBehaviour
 {
     private int EnemyHealth;
     public int StatusCheck;
+    public AudioClip ZombieGrowl;
     public AudioClip ZombieDeathSound;
-
+    AudioSource audioSource;
     Animation anim;
     NavMeshAgent navAgent;
 
@@ -25,16 +26,16 @@ public class ZombieDeath : MonoBehaviour
         EnemyHealth -= DamageAmount;
         if (EnemyHealth <= 0 && StatusCheck == 0)
         {
+            AudioSource.PlayClipAtPoint(this.ZombieDeathSound, this.gameObject.transform.position);
             navAgent.enabled = false;
             this.GetComponent<ZombieAI>().enabled = false;
             this.GetComponent<BoxCollider>().enabled = false;
             StatusCheck = 2;
-
+            
             anim.wrapMode = WrapMode.Once;
             anim.Play("Z_FallingBack");
-
-            // Don't play a clip until we have a zombie death sound
-            // AudioSource.PlayClipAtPoint(this.ZombieDeathSound, this.gameObject.transform.position);
+       
+          
         }
     }
 }
