@@ -9,9 +9,13 @@ public class FirePistol : MonoBehaviour
 
     [Header("Asset References")]
     public AudioClip GunFire;
-    public GameObject MuzzleShot;
+    //public GameObject MuzzleShot;
     public GameObject MuzzleParticles;
     public GameObject ParticleSpawnTransform;
+
+    [Header("Audio Settings")]
+    public float PitchThresholdLow = .8f;
+    public float PitchThresholdHigh = 1.2f;
 
     AudioSource audioSource;
     AmmoController ammoControl;
@@ -39,6 +43,9 @@ public class FirePistol : MonoBehaviour
     {
         IsFiring = true;
         this.GetComponent<Animation>().Play("PistolShot");
+
+        this.audioSource.pitch = Random.Range(this.PitchThresholdLow, this.PitchThresholdHigh);
+        Debug.Log(this.audioSource.pitch);
         this.audioSource.Play();
 
         //this.MuzzleShot.SetActive(true);
