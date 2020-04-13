@@ -5,9 +5,13 @@ using UnityEngine.Analytics;
 
 public class FirePistol : MonoBehaviour
 {
-    public GameObject MuzzleShot;
-    public AudioClip GunFire;
     public int DamageAmount = 1;
+
+    [Header("Asset References")]
+    public AudioClip GunFire;
+    public GameObject MuzzleShot;
+    public GameObject MuzzleParticles;
+    public GameObject ParticleSpawnTransform;
 
     AudioSource audioSource;
     AmmoController ammoControl;
@@ -37,8 +41,16 @@ public class FirePistol : MonoBehaviour
         this.GetComponent<Animation>().Play("PistolShot");
         this.audioSource.Play();
 
-        this.MuzzleShot.SetActive(true);
-        this.MuzzleShot.GetComponent<Animation>().Play("MuzzleAnim");
+        //this.MuzzleShot.SetActive(true);
+        //this.MuzzleShot.GetComponent<Animation>().Play("MuzzleAnim");
+
+        Transform particleTransform;
+        if (this.ParticleSpawnTransform != null)
+            particleTransform = this.ParticleSpawnTransform.transform;
+        else
+            particleTransform = this.gameObject.transform;
+
+        Object.Instantiate(this.MuzzleParticles, particleTransform);
 
         RaycastHit Shot;
         if (Physics.Raycast(transform.position,transform.TransformDirection(Vector3.forward), out Shot))
