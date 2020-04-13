@@ -14,7 +14,7 @@ public class Trigger_Jumpscare : MonoBehaviour
             return;
 
         if (Random.value * 100 <= this.Chance)
-            other.GetComponent<AudioSource>().PlayOneShot(this.AudioClips[Random.Range(0, this.AudioClips.Count)], .5f);
+            other.GetComponent<AudioSource>().PlayOneShot(this.AudioClips[Random.Range(0, this.AudioClips.Count)], .4f);
 
         Destroy(this.gameObject);
     }
