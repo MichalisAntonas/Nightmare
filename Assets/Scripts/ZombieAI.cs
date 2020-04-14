@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 
 public class ZombieAI : MonoBehaviour
@@ -71,6 +72,12 @@ public class ZombieAI : MonoBehaviour
 
     IEnumerator InflictDamage()
     {
+        Analytics.CustomEvent("player_receive_damage", new Dictionary<string, object>
+        {
+            { "time", (int)(System.DateTime.UtcNow - Finish.startTime).TotalSeconds }
+        });
+        Debug.Log("AnalyticsEvent: player_receive_damage");
+
         isAttacking = true;
         this.player.GetComponent<HealthController>().Health -= Random.Range(10, 20) * Random.value;
 

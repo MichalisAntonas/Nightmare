@@ -58,9 +58,12 @@ public class FirePistol : MonoBehaviour
 
         Object.Instantiate(this.MuzzleParticles, particleTransform);
 
+        Analytics.CustomEvent("gun_fire");
+        Debug.Log("AnalyticsEvent: gun_fire");
+
         RaycastHit Shot;
         if (Physics.Raycast(transform.position,transform.TransformDirection(Vector3.forward), out Shot))
-            Shot.transform.SendMessage("DamageZombie", DamageAmount, SendMessageOptions.DontRequireReceiver);
+            Shot.transform.SendMessage("DamageZombie", this.DamageAmount, SendMessageOptions.DontRequireReceiver);
 
         yield return new WaitForSeconds(0.5f);
         IsFiring = false;

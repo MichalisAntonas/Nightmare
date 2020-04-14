@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 public class Trigger_Jumpscare : MonoBehaviour
 {
@@ -13,8 +14,12 @@ public class Trigger_Jumpscare : MonoBehaviour
         if (other.gameObject.tag != "Player")
             return;
 
-        if (Random.value * 100 <= this.Chance)
+        if (this.Chance >= Random.Range(0f, 100f))
+        {
             other.GetComponent<AudioSource>().PlayOneShot(this.AudioClips[Random.Range(0, this.AudioClips.Count)], .4f);
+            Analytics.CustomEvent("trigger_jumpscare");
+            Debug.Log("AnalyticsEvent: trigger_jumpscare");
+        }
 
         Destroy(this.gameObject);
     }

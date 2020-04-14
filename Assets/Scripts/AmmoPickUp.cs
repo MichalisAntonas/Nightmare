@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 public class AmmoPickUp : MonoBehaviour
 {
@@ -17,5 +18,8 @@ public class AmmoPickUp : MonoBehaviour
 
         this.gameObject.SetActive(false);
         Destroy(this.gameObject, 5);
+
+        Analytics.CustomEvent("ammo_pickup");
+        Debug.Log("AnalyticsEvent: ammo_pickup");
     }
 }

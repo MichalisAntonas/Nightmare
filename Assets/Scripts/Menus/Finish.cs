@@ -6,21 +6,33 @@ using UnityEngine.SceneManagement;
 
 public class Finish : MonoBehaviour
 {
+    public static System.DateTime startTime;
+
+    void Start()
+    {
+        startTime = System.DateTime.UtcNow;
+        Analytics.CustomEvent("level_start", new Dictionary<string, object>
+        {
+            { "timestamp", startTime.ToString("s") }
+        });
+        Debug.Log(startTime.ToString("s"));
+    }
+
     void OnTriggerEnter(Collider collider)
     {
-        AnalyticsEvent.GameOver();
+        if (collider.gameObject.tag != "Player")
+            return;
 
-        //StartCoroutine(TakeToFinish());
+        Analytics.CustomEvent("level_complete", new Dictionary<string, object>
+        {
+            { "timestamp", System.DateTime.UtcNow.ToString("s") },
+            { "seconds_taken", (int)(System.DateTime.UtcNow - startTime).TotalSeconds }
+        });
+
+        Debug.Log(System.DateTime.UtcNow.ToString("s"));
+        Debug.Log((int)(System.DateTime.UtcNow - startTime).TotalSeconds);
+
         SceneManager.LoadScene(4);
         Cursor.visible = true;
     }
-
-    /*IEnumerator TakeToFinish()
-    {
-        yield return new WaitForSeconds(1);
-        SceneManager.LoadScene(4);
-        yield return new WaitForSeconds(2);
-        SceneManager.LoadScene(2);
-
-    }*/
 }

@@ -7,7 +7,6 @@ public class PlayerCasting : MonoBehaviour
     public static float DistanceFromTarget;
     public float ToTarget;
 
-
     void Update()
     {
         RaycastHit Hit;

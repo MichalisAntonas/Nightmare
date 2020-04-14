@@ -2,40 +2,47 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Analytics;
 
 public class ZombieDeath : MonoBehaviour
 {
-    private int EnemyHealth;
     public int StatusCheck;
     public AudioClip ZombieGrowl;
     public AudioClip ZombieDeathSound;
+
+    private int Health { get; set; }
+
     AudioSource audioSource;
     Animation anim;
     NavMeshAgent navAgent;
 
     void Start()
     {
-        EnemyHealth = Random.Range(3, 5);
+        this.Health = Random.Range(3, 5);
 
-        anim = this.GetComponentInChildren<Animation>();
-        navAgent = this.GetComponent<NavMeshAgent>();
+        this.anim = this.GetComponentInChildren<Animation>();
+        this.navAgent = this.GetComponent<NavMeshAgent>();
     }
 
     void DamageZombie(int DamageAmount)
     {
-        EnemyHealth -= DamageAmount;
-        if (EnemyHealth <= 0 && StatusCheck == 0)
+        Analytics.CustomEvent("zombie_receive_damage");
+        Debug.Log("AnalyticsEvent: zombie_receive_damage");
+
+        this.Health -= DamageAmount;
+        if (this.Health <= 0 && this.StatusCheck == 0)
         {
             AudioSource.PlayClipAtPoint(this.ZombieDeathSound, this.gameObject.transform.position);
-            navAgent.enabled = false;
+            this.navAgent.enabled = false;
             this.GetComponent<ZombieAI>().enabled = false;
             this.GetComponent<BoxCollider>().enabled = false;
-            StatusCheck = 2;
-            
-            anim.wrapMode = WrapMode.Once;
-            anim.Play("Z_FallingBack");
-       
-          
+            this.StatusCheck = 2;
+
+            this.anim.wrapMode = WrapMode.Once;
+            this.anim.Play("Z_FallingBack");
+
+            Analytics.CustomEvent("zombie_death");
+            Debug.Log("AnalyticsEvent: zombie_death");
         }
     }
 }

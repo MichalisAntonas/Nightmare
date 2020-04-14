@@ -13,7 +13,12 @@ public class Trigger_ZombieActivate : MonoBehaviour
         if (other.gameObject.tag.ToLower() != "player")
             return;
 
-        AnalyticsEvent.TutorialStep(this.TriggerID);
+        Analytics.CustomEvent("level_step", new Dictionary<string, object>
+        {
+            { "step", this.TriggerID },
+            { "time", (int)(System.DateTime.UtcNow - Finish.startTime).TotalSeconds }
+        });
+        Debug.Log("AnalyticsEvent: level_step");
 
         foreach (GameObject zombie in this.ZombiesToActivate)
             zombie.GetComponent<ZombieScript>().Activate();
