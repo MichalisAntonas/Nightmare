@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class ZombieAIRun : MonoBehaviour
 {
-    public float enemySpeed = .01f;
+    public float enemySpeed = 3f;
     public AudioClip[] hurtSounds;
 
     AudioSource audioSource;
@@ -29,7 +29,7 @@ public class ZombieAIRun : MonoBehaviour
         this.anim.wrapMode = WrapMode.Loop;
 
         this.navAgent = this.GetComponent<NavMeshAgent>();
-        this.navAgent.speed = 2f;
+        this.navAgent.speed = 3f;
     }
 
     void Update()
@@ -54,7 +54,7 @@ public class ZombieAIRun : MonoBehaviour
         if (collider.gameObject.tag == "Player")
         {
             attackTrigger = true;
-            enemySpeed = 1;
+            enemySpeed = 0;
         }
     }
     void OnTriggerExit(Collider collider)
@@ -64,8 +64,8 @@ public class ZombieAIRun : MonoBehaviour
 
         if (collider.gameObject.tag == "Player")
         {
-            enemySpeed = .1f;
-            //anim.Play("Z_Run");
+            enemySpeed = 3f;
+            anim.Play("Z_Run_InPlace");
             attackTrigger = false;
         }
     }

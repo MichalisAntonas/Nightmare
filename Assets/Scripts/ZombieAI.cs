@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class ZombieAI : MonoBehaviour
 {
-    public float enemySpeed = .01f;
+    public float enemySpeed = 1.5f;
     public AudioClip[] hurtSounds;
 
     AudioSource audioSource;
@@ -29,7 +29,7 @@ public class ZombieAI : MonoBehaviour
         this.anim.wrapMode = WrapMode.Loop;
 
         this.navAgent = this.GetComponent<NavMeshAgent>();
-        this.navAgent.speed = 1f;
+        this.navAgent.speed = 1.5f;
     }
 
     void Update()
@@ -64,7 +64,7 @@ public class ZombieAI : MonoBehaviour
 
         if (collider.gameObject.tag == "Player")
         {
-            enemySpeed = .01f;
+            enemySpeed = 1.5f;
             anim.Play("Z_Walk_InPlace");
             attackTrigger = false;
         }
