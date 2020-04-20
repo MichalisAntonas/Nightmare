@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class LockedDoor : MonoBehaviour
 {
     public float TheDistance;
+    public GameObject ZombieToActivate;
     public GameObject ActionDisplay;
     public GameObject ActionText; 
     public GameObject ExtraCross;
@@ -26,18 +27,16 @@ public class LockedDoor : MonoBehaviour
             ActionDisplay.SetActive(true);
             ActionText.SetActive(true);
         }
+
         if (Input.GetButtonDown("Action"))
         {
             if (TheDistance <= 2)
             {
-      
-
                 this.GetComponent<BoxCollider>().enabled = false;
                 ActionDisplay.SetActive(false);
-                ActionText.SetActive(false);      
+                ActionText.SetActive(false);
                 ExtraCross.SetActive(false);
                 StartCoroutine(DoorReset());
-              
             }
         }
     }
@@ -51,23 +50,26 @@ public class LockedDoor : MonoBehaviour
 
     IEnumerator DoorReset()
     {
-        if (GlobalInventory.firstDoorKey == false)
+        if (!GlobalInventory.firstDoorKey)
         {
             Lockdoor.Play();
             yield return new WaitForSeconds(1);
+
+            ZombieToActivate.SetActive(true);
+
             this.GetComponent<BoxCollider>().enabled = true;
             TextBox.GetComponent<Text>().text = "I need to find the key to open this door.";
+
             yield return new WaitForSeconds(7);
             TextBox.GetComponent<Text>().text = "";
         }
+
         else
         {
             OpenDoor.Play();
             firstKeyDoor.GetComponent<Animator>().Play("FinalDoor");
             yield return new WaitForSeconds(1.1f);
             this.GetComponent<BoxCollider>().enabled = false;
-        
         }
     }
-
 }
