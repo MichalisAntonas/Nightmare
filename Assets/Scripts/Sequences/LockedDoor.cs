@@ -5,14 +5,20 @@ using UnityEngine.UI;
 public class LockedDoor : MonoBehaviour
 {
     public float TheDistance;
+
+    [Header("Game Objects")]
+    public GameObject Key;
     public GameObject ZombieToActivate;
     public GameObject ActionDisplay;
     public GameObject ActionText; 
     public GameObject ExtraCross;
-    public AudioSource Lockdoor;
-    public AudioSource OpenDoor;
     public GameObject firstKeyDoor;
     public GameObject TextBox;
+
+    [Header("Audio")]
+    public AudioSource Lockdoor;
+    public AudioSource OpenDoor;
+
     void Update()
     {
         TheDistance = PlayerCasting.DistanceFromTarget;
@@ -55,6 +61,7 @@ public class LockedDoor : MonoBehaviour
             Lockdoor.Play();
             yield return new WaitForSeconds(1);
 
+            Key.SetActive(true);
             ZombieToActivate.SetActive(true);
 
             this.GetComponent<BoxCollider>().enabled = true;
